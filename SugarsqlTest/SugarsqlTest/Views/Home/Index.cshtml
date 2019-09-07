@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div>
+    <div>
+        @*<button class="btn btn-default" onclick="Add()">Add</button>*@
+        <button class="btn btn-info" onclick="Insert()">Insert</button>
+        <button class="btn btn-success" onclick="Update()">Update</button>
+        <button class="btn btn-danger" onclick="Delete()">Delete</button>
+        <p>说明</p>
+        <small>插入Name='E',Age='5',Sex='Man'</small>
+        <small>更新Name='E'的数据,让Age='6',Sex='Woman'</small>
+        <small>删除Name='E'的数据</small>
+    </div>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Sex</th>
+        </tr>
+        @{
+            foreach (var item in ViewBag.list)
+            {
+                <tr>
+                    <td>@item.ID</td>
+                    <td>@item.Name</td>
+                    <td>@item.Age</td>
+                    <td>@item.Sex</td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+
+@*<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>*@
+<script>
+    function ajax(_url) {
+        $.ajax({
+            type: 'post',
+            url: _url,
+            async: true,
+            data: {
+
+            },
+            success: function (res) {
+                alert("success!")
+                window.location.reload();
+            },
+            error: function (res) {
+                alert("fail!")
+                window.location.reload();
+            }
+        })
+    }
+
+    function Insert() {
+        ajax('../Home/Insert');
+    }
+    function Update() {
+        ajax('../Home/Update');
+    }
+    function Delete() {
+        ajax('../Home/Delete');
+    }
+</script>
