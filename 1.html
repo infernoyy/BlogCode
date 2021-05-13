@@ -1,0 +1,402 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        #loading{
+            /* width: 100%; */
+            display: flex;/*弹性盒模型*/
+            justify-content: center;/*主轴方向居中显示*/
+            align-items: center;/*交叉轴方向居中显示*/
+            height: 100vh;
+        }
+        ul{
+            height: 200px;
+        }
+        li{
+            float: left;
+            width: 20px;
+            height: 20px;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+        li:nth-child(1){
+            background-color: #f62e74;
+            animation: love1 4s infinite;
+        }
+        li:nth-child(2){
+            background-color: #f45330;
+            animation: love2 4s infinite;
+            animation-delay: 0.15s;
+        }
+        li:nth-child(3){
+            background-color: #ffc883;
+            animation: love3 4s infinite;
+            animation-delay: 0.3s;
+        }
+        li:nth-child(4){
+            background-color: #30d268;
+            animation: love4 4s infinite;
+            animation-delay: 0.45s;
+        }
+        li:nth-child(5){
+            background-color: #006cb4;
+            animation: love5 4s infinite;
+            animation-delay: 0.6s;
+        }
+        li:nth-child(6){
+            background-color: #784697;
+            animation: love4 4s infinite;
+            animation-delay: 0.75s;
+        }
+        li:nth-child(7){
+            background-color: #ffc883;
+            animation: love3 4s infinite;
+            animation-delay: 0.9s;
+        }
+        li:nth-child(8){
+            background-color: #f45330;
+            animation: love2 4s infinite;
+            animation-delay: 1.05s;
+        }
+        li:nth-child(9){
+            background-color: #f62e74;
+            animation: love1 4s infinite;
+            animation-delay: 1.2s;
+        }
+        @keyframes love1{
+            30%,50%{height: 60px; transform: translateY(-30px);}
+            75%,100%{height: 20px; transform: translateY(0);}
+        }
+        @keyframes love2{
+            30%,50%{height: 125px; transform: translateY(-62.5px);}
+            75%,100%{height: 20px; transform: translateY(0);}
+            
+        }
+        @keyframes love3{
+            30%,50%{height: 160px; transform: translateY(-75px);}
+            75%,100%{height: 20px; transform: translateY(0);}
+        }
+        @keyframes love4{
+            30%,50%{height: 180px; transform: translateY(-60px);}
+            75%,100%{height: 20px; transform: translateY(0);}
+        }
+        @keyframes love5{
+            30%,50%{height: 190px; transform: translateY(-45px);}
+            75%,100%{height: 20px; transform: translateY(0);}
+        }
+
+        *{margin:0px;padding:0px;}
+
+		/* music */
+		@-webkit-keyframes reverseRotataZ{
+		 0%{-webkit-transform: rotateZ(0deg);}
+		 100%{-webkit-transform: rotateZ(-360deg);}
+		}
+		@-webkit-keyframes rotataZ{
+		 0%{-webkit-transform: rotateZ(0deg);}
+		 100%{-webkit-transform: rotateZ(360deg);}
+		}
+		#musicControl { position:fixed;right:10px;top:20px;margin-top:0;display:inline-block;z-index:99999999}
+		#musicControl a { display:inline-block;width: 25px; height: 25px;overflow:hidden; no-repeat;background-size:100%;}
+		#musicControl a audio{width:100%;height:56px;}
+		#musicControl a.stop { background-position:left bottom;}
+		#musicControl a.on { background-position:0px 1px;-webkit-animation: reverseRotataZ 1.2s linear infinite;}
+		#music_play_filter{width:100%;height:100%;overflow:hidden;position:fixed;top:0;left:0;z-index:99999998;}
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <canvas id="EffectCanvas" width="980" height="1742" style="position: fixed; top: 0px; left: 0px; z-index: 9999999; pointer-events: none;"></canvas>
+
+
+	<span id="musicControl">
+		<a id="mc_play" class="on" onclick="play_music();">
+			<audio id="musicfx" controls muted>
+			  <source src="bg.mp3" type="audio/mpeg">
+			</audio>
+		</a>
+	</span>
+
+	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<link href="https://cdn.bootcdn.net/ajax/libs/animate.css/4.1.1/animate.compat.min.css" rel="stylesheet">
+    <script type="text/javascript">
+    	$(document).ready(function(){
+    		setTimeout(function(){
+				$("#loading").addClass("animated fadeOut")
+
+				downImg()
+				play_music()
+    		},6000)
+
+
+    	})
+
+    	function play_music(){
+    		var music = document.getElementById('musicfx'); 
+			if(music.paused){
+
+				setTimeout(function(){music.play();},1000)
+				
+				 $('#mc_play').attr('class','on');
+			}else{
+				music.pause();
+				 $('#mc_play').attr('class','stop');
+			}
+		}
+    </script>
+
+
+    <script type="text/javascript">
+    	/*
+
+	    new Effect({
+	        //特效图片，多张图片时传入数组，单个图片时传入字符串
+	        effectUrl : ["./images/xue.png","./images/xin.png"],
+	        //特效旋转，1/true为旋转，0/false为不旋转
+	        rotate : 1,
+	        //特效方向，left/right/up/down
+	        direction : "up"
+	    });
+
+	 */
+
+
+	(function(){
+	    var Effect = window.Effect = function(json){
+	        //全局定时器
+	        this.timer = null;
+	        //删除原来的canvas
+	        var EffectCanvas = document.getElementById("EffectCanvas");
+	        if(EffectCanvas){
+	            document.body.removeChild(EffectCanvas);
+	        };
+	        //特效的图片数组
+	        if(typeof json.effectUrl == "object"){
+	            this.effectUrl = json.effectUrl;
+	        }else if(/\&\&\&/g.test(json.effectUrl)){
+	            this.effectUrl = json.effectUrl.split("&&&");
+	        }else if(/\[.*\]/g.test(json.effectUrl)){
+	            this.effectUrl = JSON.parse(json.effectUrl);
+	        }else{
+	            try{
+	                this.effectUrl = json.effectUrl.split(",");
+	            }catch(err){
+	            };
+	        };
+	        //需要的图片标签数组，因为canvas的drawImage方法需要一个图片标签
+	        this.imageArr = [];
+	        //每个特效的图片对象数组
+	        this.effectsArr = [];
+	        //锁，每隔多长时间出现一个图片
+	        this.num = 35;
+	        //全局json
+	        this.json = json;
+	        //初始化
+	        this.init();
+	    };
+
+	    Effect.prototype.init = function(){
+	        //全局canvas元素
+	        this.canvas = document.createElement("canvas");
+	        this.canvas.id = "EffectCanvas";
+	        //获得当前窗口的宽、高
+	        this.windowW = document.documentElement.clientWidth;
+	        this.windowH = document.documentElement.clientHeight;
+	        //设置给canvas
+	        this.canvas.width = this.windowW;
+	        this.canvas.height = this.windowH;
+	        //设置canvas本体的样式
+	        this.canvas.style.position = "fixed";
+	        this.canvas.style.top = "0px";
+	        this.canvas.style.left = "0px";
+	        this.canvas.style.zIndex = "9999999";
+	        //此属性就是本插件的王道所在，将元素虚化，任何事件都直接穿透此元素
+	        this.canvas.style.pointerEvents = "none";
+	        //将canvas加入body
+	        document.body.appendChild(this.canvas);
+	        //全局canvas对象
+	        this.ctx = this.canvas.getContext("2d");
+	        //加载资源
+	        var self = this;
+	        var picsum = 0;
+	        for (var i = 0; i < this.effectUrl.length; i++) {
+	            //资源获取中
+	            this.imageArr.push( new Image() );
+	            this.imageArr[i].src = this.effectUrl[i];
+	            //资源获取完毕
+	            this.imageArr[i].onload = function(){
+	                picsum++;
+	                if(picsum == self.effectUrl.length){
+	                    //初始化定时器
+	                    self.initTimer();
+	                };
+	            };
+	        };
+	    };
+
+	    Effect.prototype.initTimer = function(){
+	        //绑定this
+	        var self = this;
+	        //先往数组里扔一个
+	        var imgIdx = parseInt( Math.random() * this.imageArr.length );//热气球数组的下标
+	        this.effectsArr.push(new EffectItem( this.ctx , this.imageArr[imgIdx] , this.json.rotate , this.json.direction ) );
+
+	        //每隔三十毫秒刷新一次canvas
+	        this.timer = setInterval(function(){
+	            //先清屏
+	            self.ctx.clearRect(0,0,self.windowW,self.windowH);
+	            //放入特效图片
+	            self.num--;
+	            if(self.num <= 0){
+	                self.num = 35;
+	                var imgIdx = parseInt( Math.random() * self.imageArr.length );//热气球数组的下标
+	                self.effectsArr.push(new EffectItem( self.ctx , self.imageArr[imgIdx] , self.json.rotate , self.json.direction ) );
+	            };
+	            //更新，渲染
+	            for (var i = 0; i < self.effectsArr.length; i++) {
+	                //判断该元素是否该被清除
+	                if(self.effectsArr[i].death){
+	                    self.effectsArr.splice(i,1);
+	                };
+	                self.effectsArr[i].update();
+	                self.effectsArr[i].render();
+	            };
+	        },20);
+	    };
+	})();
+	//特效的单个图片的对象
+	(function(){
+	    var EffectItem = window.EffectItem = function(ctx,url,rotate,direction){
+	        //接受canvas对象
+	        this.ctx = ctx;
+	        //设置自身的url
+	        this.url = url;
+	        //设置旋转
+	        this.rotate = rotate;
+	        //设置方向
+	        this.direction = direction;
+	        //设置自身的存在状态
+	        this.death = false;
+	        //初始化
+	        this.init();
+	    };
+	    EffectItem.prototype.init = function(){
+	        //此图片所在的位置，以及图片将要移动到哪里、图片移动速度
+	        this.windowW = document.documentElement.clientWidth;
+	        this.windowH = document.documentElement.clientHeight;
+	        this.x = 0;
+	        this.y = 0;
+	        this.goToX = 0;
+	        this.goToY = 0;
+	        this.moveX = 0;
+	        this.moveY = 0;
+	        this.speedX = 0;
+	        this.speedY = 0;
+	        this.rotateDeg = 0;
+	        this.opacity = 1;
+	        if(this.direction == "down" || this.direction == "up"){
+	            //所在位置
+	            this.x = Math.random() * this.windowW;
+	            if(this.direction == "down"){
+	                this.y = this.windowH;
+	            };
+	            //移动到那里，取一个区间，-100到100内
+	            this.goToX = 200 * Math.random() - 100;
+	            //算出每秒的移动速度，这里的移动速度是x到x + goToX的
+	            this.moveX = this.goToX / 350;
+	            //移动速度，以每秒刷新50次的速度，1000/20*7
+	            this.speedY = this.windowH / 350;
+	            if(this.direction == "down"){
+	                this.speedY = -this.speedY;
+	            };
+	        }else if(this.direction == "left" || this.direction == "right"){
+	            //所在位置
+	            this.y = Math.random() * this.windowH;
+	            if(this.direction == "right"){
+	                this.x = this.windowW;
+	            };
+	            //移动到那里，取一个区间，属于设定好的y-100到y+100内
+	            this.goToY = 200 * Math.random() - 100;
+	            //算出每秒的移动速度，这里的移动速度是y到y + goToY的
+	            this.moveY = this.goToY / 350;
+	            //移动速度，以每秒刷新50次的速度，1000/20*7
+	            this.speedX = this.windowW / 350;
+	            if(this.direction == "right"){
+	                this.speedX = -this.speedX;
+	            };
+	        };
+	        //图片大小
+	        this.w = 25 + Math.random() * 10;
+	        this.h = this.w;
+	    };
+	    //更新，仅仅更新数据，视图不变
+	    EffectItem.prototype.update = function(){
+	        this.x = this.x + this.moveX + this.speedX;
+	        this.y = this.y + this.moveY + this.speedY;
+	        //旋转
+	        if(this.rotate){
+	            this.rotateDeg += 360 / 100 * Math.PI / 180;
+	            if(this.rotateDeg >= 360){
+	                this.rotateDeg = 0;
+	            };
+	        };
+	        //透明
+	        this.opacity -= 1 / 350;
+	        //判断自己是否该被消灭
+	        if(this.direction == "left" && ( this.x > ( this.windowW + this.w ) ) ){
+	            this.death = true;
+	        }else if(this.direction == "right" && ( this.x < -this.w ) ){
+	            this.death = true;
+	        }else if(this.direction == "up" && ( this.y > ( this.windowH + this.y ) ) ){
+	            this.death = true;
+	        }else if(this.direction == "down" && ( this.y < -this.h ) ){
+	            this.death = true;
+	        };
+	    };
+	    //渲染，仅仅改变视图，不更新数据
+	    EffectItem.prototype.render = function(){
+	        this.ctx.save();
+	        this.ctx.translate(this.x + this.w / 2 , this.y + this.h / 2);
+	        this.ctx.rotate( this.rotateDeg );
+	        this.ctx.globalAlpha = this.opacity;
+	        this.ctx.drawImage( this.url , -this.w / 2 , -this.h / 2 , this.w , this.h);
+	        this.ctx.restore();
+	    };
+	})();
+
+    </script>
+	<script type="text/javascript">
+
+		function downImg(){
+			new Effect({
+		        //特效图片，多张图片时传入数组，单个图片时传入字符串
+		        effectUrl : ["./images/xue.png","./images/xin.png","./images/a1.png","./images/a2.png","./images/a3.png","./images/a4.png"],
+		        //特效旋转，1/true为旋转，0/false为不旋转
+		        rotate : 1,
+		        //特效方向，left/right/up/down
+		        direction : "up"
+		    });
+         
+		}
+    </script>
+</body>
+</html>
